@@ -2,25 +2,25 @@
 	<view>
 		
 	
-		<view class="home-list" v-for="(item,index) in list" :key="index">
+		<view class="home-list">
 			<view class="home-list-item1 m-f m-f-jcsb m-f-aic">
 				<view class="m-f m-f-aic">
-					<image :src="item.avatar" lazy-load></image>
-					{{item.nickName}}
+					<image :src="list.avatar" lazy-load></image>
+					{{list.nickName}}
 				</view>
-				<view class="m-f m-f-aic m-f-jcsa"  @tap="follow(index)" :style="{'color':item.isFollowed?'#fff':'','background-color':item.isFollowed?'#2196f3':''}">{{item.isFollowed?'取消关注':'+关注'}}</view>	
+				<view class="m-f m-f-aic m-f-jcsa"  @tap="follow" :style="{'color':list.isFollowed?'#fff':'','background-color':list.isFollowed?'#2196f3':''}">{{list.isFollowed?'取消关注':'+关注'}}</view>	
 			</view>
-			<view class="home-list-item2">{{item.title}}</view>
-			<view class="home-list-item3 m-f m-f-aic m-f-jcc">
-				<image :src="item.image"  lazy-load></image>
+			<view class="home-list-item2">{{list.title}}</view>
+			<view class="home-list-item3 m-f m-f-aic m-f-jcc" @tap="goDetail">
+				<image :src="list.image"  lazy-load></image>
 				
-				<template v-if="item.type === 'video'">
+				<template v-if="list.type === 'video'">
 					
 						<view class="video-play">
 							<text class=" fa fa-play-circle-o"></text>
 						</view>
 						<view class="video-info">
-							{{item.playNumber}} 次播放 {{item.longTime}}
+							{{list.playNumber}} 次播放 {{list.longTime}}
 						</view>
 					
 				</template>
@@ -29,24 +29,24 @@
 			</view>
 			<view class="home-list-item4 m-f m-f-jcsb m-f-aic">
 				<view class="home-list-left m-f m-f-aic">
-					<view :class="['fa','fa-smile-o',item.info.type === 1?'active':''] " @tap="handleLike(index)">
+					<view :class="['fa','fa-smile-o',list.info.type === 1?'active':''] " @tap="handleLike">
 						
 					</view>
-					<view :class="{'active':item.info.type === 1}" @tap="handleLike(index)">
-						{{item.info.likeNumber}}
+					<view :class="{'active':list.info.type === 1}" @tap="handleLike">
+						{{list.info.likeNumber}}
 					</view>
-					<view :class="['fa',' fa-frown-o',item.info.type === 2?'active':'']" @tap="handleDislike(index)"></view>
-					<view  :class="{'active':item.info.type === 2}" @tap="handleDislike(index)">{{item.info.dislikeNumber}}</view>
+					<view :class="['fa',' fa-frown-o',list.info.type === 2?'active':'']" @tap="handleDislike"></view>
+					<view  :class="{'active':list.info.type === 2}" @tap="handleDislike">{{list.info.dislikeNumber}}</view>
 				</view>
 				<view class="home-list-right m-f m-f-aic">
 					<view class="fa fa-commenting-o">
 						
 					</view>
 					<view class="">
-						{{item.commentNumber}}
+						{{list.commentNumber}}
 					</view>
 					<view class="fa fa-share"></view>
-					<view>{{item.shareNumber}}</view>
+					<view>{{list.shareNumber}}</view>
 				</view>
 			</view>
 		</view>
@@ -62,22 +62,20 @@
 				
 			};
 		},
-		props:{
-			list:{
-				type:Array,
-				default:[]
-			}
-		},
+		props:['list'],
 		methods:{
 			handleLike(index){
-				this.$emit('handleLike',index)
+				this.$emit('handleLike')
 			},
 			handleDislike(index){
-				this.$emit('handleDislike',index)
+				this.$emit('handleDislike')
 			},
 				
 			follow(index){
-				this.$emit('follow',index)
+				this.$emit('follow')
+			},
+			goDetail(){
+				console.log('进入详情页')
 			}
 			
 		}
@@ -105,7 +103,7 @@
 				width: 90rpx;
 				height: 40rpx;
 				color: #555;
-				font-size: 25rpx;
+				font-size: 20rpx;
 			}
 			.home-list-item2{
 				padding: 20rpx 0;

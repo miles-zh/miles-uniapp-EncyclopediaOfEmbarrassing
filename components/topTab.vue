@@ -20,7 +20,7 @@
 				
 			};
 		},
-		// props:['tabList','tabIndex','scrollInto'],
+		props:['tabList','tabIndex','scrollInto'],
 		methods:{
 			clickTab(index){
 				this.$emit('changeTab',index)
@@ -31,7 +31,7 @@
 			
 		},
 		updated() {
-			console.log(this.scrollInto,"aa")
+			// console.log(this.scrollInto,"aa")
 		}
 	}
 	

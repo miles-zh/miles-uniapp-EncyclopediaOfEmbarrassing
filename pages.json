@@ -13,11 +13,20 @@
             "path" : "pages/dynamic/dynamic",
             "style" : {}
         }
-        ,{
-            "path" : "pages/simpleNews/simpleNews",
-            "style" : {}
-        }
+       
         
+        ,{
+            "path" : "pages/search/search",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
+        ,{
+            "path" : "pages/publish/publish",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
