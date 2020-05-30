@@ -11,7 +11,9 @@
 		}
 	    ,{
             "path" : "pages/dynamic/dynamic",
-            "style" : {}
+            "style" : {
+				"navigationStyle":"custom"
+			}
         }
        
         
@@ -30,7 +32,7 @@
         ,{
             "path" : "pages/simpleNews/simpleNews",
             "style" : {
-				"navigationStyle":"custom"
+				
 			}
         }
     ],
