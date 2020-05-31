@@ -2,10 +2,9 @@
 	<view>
 		<view class="tabs">
 			<scroll-view class="scroll-h" id="tab-bar" :scroll-x='true' :show-scrollbar="false" :scroll-into-view="scrollInto">
-				<view :class="['uni-tab-item', tabIndex === index ? 'tab-active':'']" v-for="(item,index) in tabList" :key="item.id"
-				 @tap="clickTab(index)">
+				<view :class="['uni-tab-item', tabIndex === index ? 'tab-active':'']" v-for="(item,index) in tabList" :key="item.id" @tap="clickTab(index)" :style="{width:(itemWidth || 'auto')}">
 					{{item.name}}
-					<view class="active-line" v-show="tabIndex === index"></view>
+					<view :class="[tabIndex === index?'active-line':'','line']"></view>
 				</view>
 		
 			</scroll-view>
@@ -20,7 +19,7 @@
 				
 			};
 		},
-		props:['tabList','tabIndex','scrollInto'],
+		props:['tabList','tabIndex','scrollInto','itemWidth'],
 		methods:{
 			clickTab(index){
 				this.$emit('changeTab',index)
@@ -60,11 +59,15 @@
 				font-size: 30rpx;
 				text-align: center;
 			}
-			.active-line{
-				height: 2rpx;
-				background-color: $theme-color;
+			.line{
 				width: 70rpx;
 				margin:0 auto;
+				height: 2rpx;
+			}
+			.active-line{
+				
+				background-color: $theme-color;
+				
 				
 			}
 			.tab-active{

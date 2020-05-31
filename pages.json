@@ -32,7 +32,33 @@
         ,{
             "path" : "pages/simpleNews/simpleNews",
             "style" : {
+				"navigationStyle":"custom"
 				
+			}
+        }
+        ,{
+            "path" : "pages/topicsClassify/topicsClassify",
+            "style" : {
+				"navigationBarTitleText":"话题分类"
+			}
+        }
+        ,{
+            "path" : "pages/topicDetail/topicDetail",
+            "style" : {
+				"navigationBarTitleText":"话题详情",
+				"app-plus":{
+					"scrollIndicator":"none",
+					"titleNView":{
+						"type":"transparent",
+						"buttons":[
+							{
+								"type":"menu"
+							}
+						],
+						"backgroundColor":"#2196F3"
+					}
+				},
+				"enablePullDownRefresh":true
 			}
         }
     ],

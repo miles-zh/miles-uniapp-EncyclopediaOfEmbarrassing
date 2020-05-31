@@ -200,7 +200,7 @@
 	}
 
 	swiper {
-		height: calc(100vh - 100rpx - 88rpx - 150rpx) !important;
+		height: calc(100vh - 100rpx - 88rpx - 30rpx) !important;
 
 		swiper-item {
 			height: 100% !important;

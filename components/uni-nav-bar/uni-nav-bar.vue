@@ -113,11 +113,11 @@
 </script>
 
 <style lang="scss" scoped>
-	$nav-height: 60px;
+	$nav-height: 100rpx;
 	.uni-nav-bar-text {
 		
 		font-size: 34rpx;
-		padding-bottom: 10rpx;
+		// padding-bottom: 10rpx;
 	}
 	.uni-nav-bar-right-text {
 		font-size: $uni-font-size-base;
@@ -126,7 +126,7 @@
 	.uni-navbar {
 		width: 750rpx;
 		// height: 100rpx;
-		// padding-bottom: 30rpx;
+		// padding-bottom: 20rpx;
 	}
 
 	.uni-navbar__content {
@@ -135,23 +135,23 @@
 		background-color: $uni-bg-color;
 		overflow: hidden;
 		// padding-bottom: 10rpx;
-		padding-top: 25px;
+		padding-top: 50rpx;
 	}
 
 	.uni-navbar__content_view {
-		/* #ifndef APP-NVUE */
-		display: flex;
-		/* #endif */
-		align-items: center;
-		flex-direction: row;
 		
+		display: flex;
+		
+		align-items: center;
+		// flex-direction: row;
+		// padding-top: 20rpx;
 		// background-color: #FFFFFF;
 	}
 
 	.uni-navbar__header {
-		/* #ifndef APP-NVUE */
+		
 		display: flex;
-		/* #endif */
+	
 		flex-direction: row;
 		width: 750rpx;
 		height: $nav-height;

@@ -6,7 +6,7 @@
 				<view class="common-list-right-row m-f m-f-aic m-f-jcsb">
 					<view class="common-list-right-row-left m-f m-f-aic">
 						<view>{{list.username}}</view>
-						<view> <text :class="['fa',list.sex === 0?'fa-mars':'fa-venus']"></text> {{list.age}}</view>
+						<view :style="{'background-color':list.sex === 0?'#2196f3':'#f40'}"> <text :class="['fa',list.sex === 0?'fa-mars':'fa-venus']"></text> {{list.age}}</view>
 					</view>
 					<view  class="common-list-right-row-right m-f m-f-aic">
 						<view :class="{'follow':list.isFollowed}" @tap='follow'>
@@ -92,7 +92,6 @@
 					
 					view:nth-child(2){
 						padding: 5rpx 12rpx;
-						background-color: $theme-color;
 						color: #fff;
 						font-size: 20rpx;
 						letter-spacing: 5rpx;

@@ -191,6 +191,7 @@
 		text{
 			color: #fff;
 		}
+		
 	}
 	.text-area{
 		// height: 300rpx;

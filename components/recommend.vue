@@ -178,9 +178,9 @@
 <style scoped lang="scss">
 	
 	.recommend-content{
-		height: calc(100vh - 100rpx - 88rpx - 150rpx) !important;
+		height: calc(100vh - 100rpx - 88rpx - 30rpx) !important;
 		scroll-view{
-			height: calc(100vh - 100rpx - 88rpx - 150rpx) !important;
+			height: calc(100vh - 100rpx - 88rpx - 30rpx) !important;
 		}
 		.load-more{
 			text-align: center;
