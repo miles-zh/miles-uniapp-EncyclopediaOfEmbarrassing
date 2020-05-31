@@ -45,7 +45,12 @@
 	.m-f-jcsb{
 		justify-content: space-between;
 	}
-	
+	.m-f-f1{
+		flex: 1;
+	}
+	.m-f-fww{
+		flex-wrap: wrap;
+	}
 	
 	
 	
