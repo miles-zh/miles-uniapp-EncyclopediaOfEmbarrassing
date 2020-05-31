@@ -6261,7 +6261,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ./node_modules/css-loader/dist/runtime/api.js */ 18);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, ".topics-classify-wrap[data-v-75c314ec] {\n  width: 100%;\n}\nuni-swiper[data-v-75c314ec] {\n  height: calc(100vh - 200rpx) !important;\n}\nuni-swiper uni-swiper-item[data-v-75c314ec] {\n  height: 100% !important;\n}\nuni-swiper uni-swiper-item .swiper-item[data-v-75c314ec] {\n  height: 100% !important;\n}\nuni-swiper uni-swiper-item .swiper-item uni-scroll-view[data-v-75c314ec] {\n  height: 100%;\n}\nuni-swiper uni-swiper-item .swiper-item uni-scroll-view .load-more[data-v-75c314ec] {\n  font-size: 30rpx;\n  color: #999;\n  text-align: center;\n  padding: 20rpx;\n}\n", ""]);
+exports.push([module.i, ".topics-classify-wrap[data-v-75c314ec] {\n  width: 100%;\n}\nuni-swiper[data-v-75c314ec] {\n  height: calc(100vh - 90rpx) !important;\n}\nuni-swiper uni-swiper-item[data-v-75c314ec] {\n  height: 100% !important;\n}\nuni-swiper uni-swiper-item .swiper-item[data-v-75c314ec] {\n  height: 100% !important;\n}\nuni-swiper uni-swiper-item .swiper-item uni-scroll-view[data-v-75c314ec] {\n  height: 100%;\n}\nuni-swiper uni-swiper-item .swiper-item uni-scroll-view .load-more[data-v-75c314ec] {\n  font-size: 30rpx;\n  color: #999;\n  text-align: center;\n  padding: 20rpx;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
