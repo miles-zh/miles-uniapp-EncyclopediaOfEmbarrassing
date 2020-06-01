@@ -3,7 +3,7 @@
 		<view class="tabs">
 			<scroll-view class="scroll-h" id="tab-bar" :scroll-x='true' :show-scrollbar="false" :scroll-into-view="scrollInto">
 				<view :class="['uni-tab-item', tabIndex === index ? 'tab-active':'']" v-for="(item,index) in tabList" :key="item.id" @tap="clickTab(index)" :style="{width:(itemWidth || 'auto')}">
-					{{item.name}}
+					{{item.name}}{{item.number||''}}
 					<view :class="[tabIndex === index?'active-line':'','line']"></view>
 				</view>
 		

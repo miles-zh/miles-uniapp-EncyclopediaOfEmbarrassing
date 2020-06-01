@@ -32,8 +32,8 @@
         ,{
             "path" : "pages/simpleNews/simpleNews",
             "style" : {
-				"navigationStyle":"custom"
-				
+				"navigationStyle":"custom",
+				"enablePullDownRefresh":true
 			}
         }
         ,{
@@ -59,6 +59,18 @@
 					}
 				},
 				"enablePullDownRefresh":true
+			}
+        }
+        ,{
+            "path" : "pages/userList/userList",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
+        ,{
+            "path" : "pages/userchat/userchat",
+            "style" : {
+				"navigationStyle":"custom"
 			}
         }
     ],

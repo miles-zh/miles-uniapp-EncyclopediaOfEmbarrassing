@@ -19,10 +19,10 @@
 	
 	
 	/*每个页面公共css */
-	view{
+	view,scroll-view,swiper,swiper-item{
 		margin: 0;
 		padding: 0;
-		box-sizing: border-box;
+		box-sizing: border-box !important;
 	}
 	.m-f{
 		display: flex;
@@ -50,6 +50,9 @@
 	}
 	.m-f-fww{
 		flex-wrap: wrap;
+	}
+	.m-f-aifs{
+		align-items: flex-start;
 	}
 		
 	
