@@ -22,6 +22,9 @@
 						<template v-if="item.type === 'img'">
 							<image :src="item.imgUrl" lazy-load></image>
 						</template>
+						<template v-if="item.type === 'emj'"> 
+							<image :src="item.imgUrl" lazy-load class="emj"></image>
+						</template>
 						
 					</view>
 				</view>
@@ -31,13 +34,22 @@
 		</scroll-view>
 		<view class="chat-bottom m-f m-f-aic">
 			<input type="text" placeholder="请输入内容" class="m-f-f1" v-model.trim="sendText"> 
+			<view @tap="isShowImageWrap = !isShowImageWrap">+</view>
 			<view class="send-button" @tap='sendMessage'><i class="fa fa-paper-plane" aria-hidden="true"></i></view>
+		</view>
+		<view class="send-image-wrap"  @tap='sendImage' v-if='isShowImageWrap'>
+			<text @tap.stop='sendImage'>图片</text>
+			<!-- <text @tap.stop='isShowEmj =!isShowEmj'>表情</text> -->
+			<!-- <view class="expression"> -->
+				<emotion @emotion="sendEmj" :height="150"></emotion>
+			<!-- </view> -->
 		</view>
 	</view>
 </template>
 
 <script>
 	import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue'
+	import emotion from '@/components/bkhumor-emoji/index.vue';
 	function addZero(v){
 		if(v<10){
 			return '0'+v
@@ -52,6 +64,7 @@
 				sendText:'',
 				chatList:[],
 				scrollTop:0,
+				isShowImageWrap:false
 			}
 		},
 		methods: {
@@ -59,6 +72,36 @@
 				uni.navigateBack({
 					delta:1
 				})
+			},
+			sendEmj(i) {	
+				let number=i.replace(/\D/g,'')
+				let url=`/static/bkhumor-emoji/${number}.gif`
+				let obj={
+					isFriend:false,
+					userimg:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590980610189&di=359d2be9015d52cb052c727f5d45dd1d&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Fface%2F7a0d2015e88c63ea9c57f8d2bb430ff2dcbbab50.jpg",
+					type:'emj',
+					imgUrl:url,
+					createdTime:new Date().getTime()
+				}
+				this.chatList.push(obj)
+				
+				let q=uni.createSelectorQuery().in(this)
+				
+				this.$nextTick(()=>{
+					q.selectAll('.created-time').boundingClientRect()
+					q.selectAll('.chat-list').boundingClientRect()
+					q.exec(res=>{
+						res.forEach(item=>{
+							item.forEach(item1=>{
+								this.scrollTop += item1.height
+							})
+						})
+					})
+				})
+				this.isShowImageWrap=false
+				
+				
+				
 			},
 			sendMessage(){
 				// console.log(this.sendText)
@@ -104,10 +147,45 @@
 				]
 				this.chatList=arr
 			}
-			
+			,sendImage(){
+				uni.chooseImage({
+					success: (res) => {
+						let imgUrlArr=res.tempFilePaths
+						
+						imgUrlArr.forEach(item=>{
+							let obj={
+								isFriend:false,
+								userimg:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590980610189&di=359d2be9015d52cb052c727f5d45dd1d&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Fface%2F7a0d2015e88c63ea9c57f8d2bb430ff2dcbbab50.jpg",
+								type:'img',
+								imgUrl:item,
+								createdTime:new Date().getTime()
+							}
+							console.log(item)
+							this.chatList.push(obj)
+							let q=uni.createSelectorQuery().in(this)
+							
+							this.$nextTick(()=>{
+								q.selectAll('.created-time').boundingClientRect()
+								q.selectAll('.chat-list').boundingClientRect()
+								q.exec(res=>{
+									res.forEach(item1=>{
+										item1.forEach(item2=>{
+											this.scrollTop += item2.height
+										})
+									})
+								})
+							})
+							this.isShowImageWrap=false
+						})
+						
+						
+					}
+				})
+			}
 		},
 		components:{
-			uniNavBar
+			uniNavBar,
+			emotion
 		},
 		onLoad(option) {
 			this.chatUsername= JSON.parse(option.username)
@@ -208,6 +286,10 @@ scroll-view{
 				max-width: 300rpx;
 				max-height: 300rpx;
 			}
+			.emj{
+				height: 50rpx;
+				width: 50rpx;
+			}
 		}
 		.chat-list-body::before{
 			position: absolute;
@@ -256,5 +338,29 @@ scroll-view{
 		color: #555;
 		border-radius: 10rpx;
 	}
+}
+.send-image-wrap{
+	width: 750rpx;
+	height: 400rpx;
+	position: absolute;
+	bottom: 100rpx;
+	background-color: #fff;
+	box-shadow: 1px 1px 5px #eee;	
+	border:1px solid #eee;
+	padding: 30rpx;
+	z-index: 10;
+	text{
+		padding: 10rpx 20rpx;
+		background-color: $theme-color;
+		font-size: 25rpx;
+		margin-right: 20rpx;
+		color: #fff;
+	}
+	// .expression{
+	// 	height: 100%;
+	// 	width: 100%;
+	// 	position: absolute;
+	// 	z-index: 11;
+	// }
 }
 </style>

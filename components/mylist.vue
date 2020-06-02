@@ -75,7 +75,10 @@
 				this.$emit('follow')
 			},
 			goDetail(){
-				console.log('进入详情页')
+				let info=encodeURIComponent(JSON.stringify(this.list))
+				uni.navigateTo({
+					url:'/pages/contentDetail/contentDetail?info='+info
+				})
 			}
 			
 		}

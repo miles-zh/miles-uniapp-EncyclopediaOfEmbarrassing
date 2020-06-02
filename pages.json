@@ -73,6 +73,12 @@
 				"navigationStyle":"custom"
 			}
         }
+        ,{
+            "path" : "pages/contentDetail/contentDetail",
+            "style" : {
+				"navigationStyle":"custom"
+			}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
