@@ -41,7 +41,18 @@
 			<text @tap.stop='sendImage'>图片</text>
 			<!-- <text @tap.stop='isShowEmj =!isShowEmj'>表情</text> -->
 			<!-- <view class="expression"> -->
-				<emotion @emotion="sendEmj" :height="150"></emotion>
+			<swiper :indicator-dots="true">
+				<block v-for="(item,index) in expressionList" :key='index'>
+					<swiper-item >
+						<block v-for="(item1,index1) in item" :key='index1'>
+							<image :src="'/static/bkhumor-emoji/'+item1+'.gif'" @tap.stop='sendEmj(item1)'></image>
+						</block>
+					</swiper-item>
+				</block>
+				
+				
+				
+			</swiper>
 			<!-- </view> -->
 		</view>
 	</view>
@@ -49,7 +60,7 @@
 
 <script>
 	import uniNavBar from '@/components/uni-nav-bar/uni-nav-bar.vue'
-	import emotion from '@/components/bkhumor-emoji/index.vue';
+	
 	function addZero(v){
 		if(v<10){
 			return '0'+v
@@ -64,7 +75,8 @@
 				sendText:'',
 				chatList:[],
 				scrollTop:0,
-				isShowImageWrap:false
+				isShowImageWrap:false,
+				expressionList:[]
 			}
 		},
 		methods: {
@@ -73,9 +85,8 @@
 					delta:1
 				})
 			},
-			sendEmj(i) {	
-				let number=i.replace(/\D/g,'')
-				let url=`/static/bkhumor-emoji/${number}.gif`
+			sendEmj(index) {	
+				let url='/static/bkhumor-emoji/'+index+'.gif'
 				let obj={
 					isFriend:false,
 					userimg:"https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590980610189&di=359d2be9015d52cb052c727f5d45dd1d&imgtype=0&src=http%3A%2F%2Fi2.hdslb.com%2Fbfs%2Fface%2F7a0d2015e88c63ea9c57f8d2bb430ff2dcbbab50.jpg",
@@ -185,11 +196,34 @@
 		},
 		components:{
 			uniNavBar,
-			emotion
+			
 		},
 		onLoad(option) {
 			this.chatUsername= JSON.parse(option.username)
 			this.getChatList()
+			let arr1=[],arr2=[],arr3=[],arr4=[],arr5=[];
+			for(let i=1;i<99;i++){
+				if(i<22){
+					
+					arr1.push(i)
+					
+				}else if(i<43){
+					arr2.push(i)
+				}else if(i<64){
+					arr3.push(i)
+				}else if(i<85){
+					arr4.push(i)
+				}else{
+					arr5.push(i)
+				}
+			}
+			this.expressionList.push(arr1)
+			this.expressionList.push(arr2)
+			this.expressionList.push(arr3)
+			this.expressionList.push(arr4)
+			this.expressionList.push(arr5)
+			console.log(this.expressionList)
+			
 		},
 		filters:{
 			dealChatTime(v){
@@ -341,7 +375,7 @@ scroll-view{
 }
 .send-image-wrap{
 	width: 750rpx;
-	height: 400rpx;
+	height: 450rpx;
 	position: absolute;
 	bottom: 100rpx;
 	background-color: #fff;
@@ -355,6 +389,19 @@ scroll-view{
 		font-size: 25rpx;
 		margin-right: 20rpx;
 		color: #fff;
+	}
+	swiper{
+		// border:1px solid #000;
+		height: 350rpx;
+		margin-top: 10rpx;
+		swiper-item{
+			image{
+				height: 75rpx;
+				width: 75rpx;
+				// border:1px solid #000;
+				margin:10rpx;
+			}
+		}
 	}
 	// .expression{
 	// 	height: 100%;

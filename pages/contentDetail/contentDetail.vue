@@ -4,7 +4,7 @@
 			<i class="fa fa-chevron-left" aria-hidden="true" slot='left'></i>
 			<view class="m-f m-f-jcc m-f-f1">
 				<view>
-					{{this.info.title}}
+					{{this.info.title}} 
 				</view>
 			</view>
 			<text slot='right'>···</text>
