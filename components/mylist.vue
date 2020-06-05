@@ -1,7 +1,5 @@
 <template>
 	<view>
-		
-	
 		<view class="home-list">
 			<view class="home-list-item1 m-f m-f-jcsb m-f-aic">
 				<view class="m-f m-f-aic">

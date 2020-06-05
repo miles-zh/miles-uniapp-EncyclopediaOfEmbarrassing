@@ -18,7 +18,7 @@
 		</view>
 		<scroll-view scroll-y="true" @scrolltolower='loadMore'>
 			<block v-for="(item,index) in newsList" :key='index'>
-				<view class="simpleNews-list m-f m-f-aic" @tap='goChat(item.username)'>
+				<view class="simpleNews-list m-f m-f-aic" @tap='goChat(item.username,index)'>
 					<image :src="item.userimg" mode=""></image>
 					<view class="news-info m-f m-f-fdc m-f-jcsa">
 						<view class="m-f m-f-aic"><text class="username m-f-f1">
@@ -120,8 +120,9 @@
 					url:'/pages/userList/userList'
 				})
 			},
-			goChat(name){
+			goChat(name,index){
 				let url='/pages/userchat/userchat?username='+JSON.stringify(name)
+				this.newsList[index].unReadNumber =0
 				uni.navigateTo({
 					url
 				})
