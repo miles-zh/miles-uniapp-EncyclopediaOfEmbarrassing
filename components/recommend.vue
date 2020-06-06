@@ -7,7 +7,7 @@
 	
 	<scroll-view :scroll-y="true" @scrolltolower="loadMore">
 		<block v-for='(item,index) in newsList' :key='index'>
-		<mylist :list="item.listContent" @handleLike="handleLike(index)" @handleDislike='handDislike(index)'  @follow='follow(index)'></mylist>
+		<mylist :list="item" @handleLike="handleLike(index)" @handleDislike='handDislike(index)'  @follow='follow(index)'></mylist>
 		</block>
 		<!-- 上拉加载更多 -->
 		<view class="load-more">
@@ -31,141 +31,86 @@
 		data() {
 			return {
 				loadText:"上拉加载更多",
-				newsList:[
-					{
-						
-						listContent:{
-							avatar:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg',
-							nickName:'hello',
-							isFollowed:false,
-							title:'新生活开始了',
-							image:"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg",
-							type:"img", // img图文 video视频
-							info:{
-								type:0, // 0未操作，1喜欢，2不喜欢
-								likeNumber:22,
-								dislikeNumber:1
-							},
-							commentNumber:12,
-							shareNumber:23,
-							playNumber:'20w',
-							longTime:'10:23'
-						}
-					},
-					{
-						
-						listContent:{
-							avatar:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg',
-							nickName:'hello',
-							isFollowed:false,
-							title:'新生活开始了',
-							image:"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg",
-							type:"img", // img图文 video视频
-							info:{
-								type:0, // 0未操作，1喜欢，2不喜欢
-								likeNumber:22,
-								dislikeNumber:1
-							},
-							commentNumber:12,
-							shareNumber:23,
-							playNumber:'20w',
-							longTime:'10:23'
-						}
-					}
-				]
+				newsList:[]
 				
 			}
 		},
-		onLoad() {
-
+		created() {
+			this.getNewsList()
 		},
 		methods: {
 			// 顶
 			handleLike(index){
 				// console.log(index)
-				let item =this.newsList[index].listContent
-				if(item.info.type === 0){
-					item.info.type=1
-					item.info.likeNumber +=1
+				let item =this.newsList[index]
+				if(item.contentLikesInfo.type === 0){
+					item.contentLikesInfo.type=1
+					item.contentLikesInfo.likesNumber +=1
 				}
-				if(item.info.type === 2){
-					item.info.type=1
-					item.info.likeNumber +=1
-					item.info.dislikeNumber -=1
+				if(item.contentLikesInfo.type === 2){
+					item.contentLikesInfo.type=1
+					item.contentLikesInfo.likesNumber +=1
+					item.contentLikesInfo.dislikesNumber -=1
 				}
-				this.newsList[index].listContent=item
+				this.newsList[index]=item
 			},
 			// 踩
 			handDislike(index){
 				// console.log(index,this.newsList[index])
 				
-				let item =this.newsList[index].listContent
-				if(item.info.type === 0){
-					item.info.type=2
-					item.info.dislikeNumber +=1
+				let item =this.newsList[index]
+				if(item.contentLikesInfo.type === 0){
+					item.contentLikesInfo.type=2
+					item.contentLikesInfo.dislikesNumber +=1
 				}
-				if(item.info.type === 1){
-					item.info.type=2
-					item.info.likeNumber -=1
-					item.info.dislikeNumber +=1
+				if(item.contentLikesInfo.type === 1){
+					item.contentLikesInfo.type=2
+					item.contentLikesInfo.likesNumber -=1
+					item.contentLikesInfo.dislikesNumber +=1
 				}
-				this.newsList[index].listContent=item
+				this.newsList[index]=item
 			},
 			// 关注
 			follow(index){
-				this.newsList[index].listContent.isFollowed = !this.newsList[index].listContent.isFollowed
-				if(this.newsList[index].listContent.isFollowed){
+				this.newsList[index].isFollowed = !this.newsList[index].isFollowed;
+				if(this.newsList[index].isFollowed){
 					uni.showToast({
-					title:'关注成功!'
-				})
-					
+						title:'关注成功!'
+					})
 				}else{
 					uni.showToast({
 						title:'取消关注!'
 					})
-				}
-				
-				
-				
+				}	
 			},
-			loadMore(e){
+			async loadMore(e){
 					// console.log(e)
 				if(this.loadText !== '上拉加载更多'){
 					return
 				}
 				
 				this.loadText='加载中...'
-				setTimeout(()=>{
-					let obj={
-						
-						listContent:{
-							avatar:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg',
-							nickName:'hello',
-							isFollowed:false,
-							title:'新生活开始了',
-							image:"https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg",
-							type:"img", // img图文 video视频
-							info:{
-								type:0, // 0未操作，1喜欢，2不喜欢
-								likeNumber:22,
-								dislikeNumber:1
-							},
-							commentNumber:12,
-							shareNumber:23,
-							playNumber:'20w',
-							longTime:'10:23'
-						}
-					}
-					this.newsList.push(obj)
-					this.loadText='上拉加载更多'
-				},1000)
+				let {data}=await this.myRequest({
+					url:'/256990/api/home/recomend/list'
+				})
+				if(!data || data.length !==5 ){
+					this.loadText='没有更多数据'
+					return
+				}
+				this.newsList=[...this.newsList,...data]
 				
-				
-				
-				// this.loadText='没有更多数据了'
+				this.loadText='上拉加载更多'
+
 			}
 				
-			
+			,async getNewsList(){
+				
+				let {data}=await this.myRequest({
+					url:'/256990/api/home/recomend/list'
+				})
+				// console.log(data)
+				this.newsList=data
+			}
 		},
 		components: {
 			

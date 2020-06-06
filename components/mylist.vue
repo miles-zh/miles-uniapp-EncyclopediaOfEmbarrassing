@@ -4,15 +4,15 @@
 			<view class="home-list-item1 m-f m-f-jcsb m-f-aic">
 				<view class="m-f m-f-aic">
 					<image :src="list.avatar" lazy-load></image>
-					{{list.nickName}}
+					{{list.username}}
 				</view>
 				<view class="m-f m-f-aic m-f-jcsa"  @tap="follow" :style="{'color':list.isFollowed?'#fff':'','background-color':list.isFollowed?'#2196f3':''}">{{list.isFollowed?'取消关注':'+关注'}}</view>	
 			</view>
-			<view class="home-list-item2">{{list.title}}</view>
+			<view class="home-list-item2">{{list.contentTitle}}</view>
 			<view class="home-list-item3 m-f m-f-aic m-f-jcc" @tap="goDetail">
-				<image :src="list.image"  lazy-load></image>
+				<image :src="list.contentImgs[0].imgUrl" alt='图片加载中' lazy-load></image>
 				
-				<template v-if="list.type === 'video'">
+				<template v-if="list.contentType === 'video'">
 					
 						<view class="video-play">
 							<text class=" fa fa-play-circle-o"></text>
@@ -27,24 +27,24 @@
 			</view>
 			<view class="home-list-item4 m-f m-f-jcsb m-f-aic">
 				<view class="home-list-left m-f m-f-aic">
-					<view :class="['fa','fa-smile-o',list.info.type === 1?'active':''] " @tap="handleLike">
+					<view :class="['fa','fa-smile-o',list.contentLikesInfo.type === 1?'active':''] " @tap="handleLike">
 						
 					</view>
-					<view :class="{'active':list.info.type === 1}" @tap="handleLike">
-						{{list.info.likeNumber}}
+					<view :class="{'active':list.contentLikesInfo.type === 1}" @tap="handleLike">
+						{{list.contentLikesInfo.likesNumber}}
 					</view>
-					<view :class="['fa',' fa-frown-o',list.info.type === 2?'active':'']" @tap="handleDislike"></view>
-					<view  :class="{'active':list.info.type === 2}" @tap="handleDislike">{{list.info.dislikeNumber}}</view>
+					<view :class="['fa',' fa-frown-o',list.contentLikesInfo.type === 2?'active':'']" @tap="handleDislike"></view>
+					<view  :class="{'active':list.contentLikesInfo.type === 2}" @tap="handleDislike">{{list.contentLikesInfo.dislikesNumber}}</view>
 				</view>
 				<view class="home-list-right m-f m-f-aic">
 					<view class="fa fa-commenting-o">
 						
 					</view>
 					<view class="">
-						{{list.commentNumber}}
+						{{list.commentsNumber}}
 					</view>
 					<view class="fa fa-share"></view>
-					<view>{{list.shareNumber}}</view>
+					<view>{{list.sharesNumber}}</view>
 				</view>
 			</view>
 		</view>
@@ -75,7 +75,7 @@
 			goDetail(){
 				let info=encodeURIComponent(JSON.stringify(this.list))
 				uni.navigateTo({
-					url:'/pages/contentDetail/contentDetail?info='+info
+					url:'/pages/contentDetail/contentDetail?list='+info
 				})
 			}
 			
@@ -109,14 +109,17 @@
 			.home-list-item2{
 				padding: 20rpx 0;
 				font-size: 30rpx;
+				text-indent: 60rpx;
 			}
 			.home-list-item3{
 				height: 350rpx;
 				position: relative;
+				background-color: #eee;
 				image{
 					width: 100%;
 					border-radius: 20rpx;
 					height: 100%;
+					
 				}
 				view{
 					position: absolute;

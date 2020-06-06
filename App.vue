@@ -56,7 +56,9 @@
 	}
 		
 	
-	
+	.m-f-jcfe{
+		justify-content: flex-end;
+	}
 	
 	
 	

@@ -7,14 +7,15 @@
 					{{commentInfo.username}}
 				</view>
 				<view class="comment-text">
-					{{commentInfo.text}}
-					<template v-if="!commentInfo.replyList">
-						<view class="reply-button" @tap="replyComment">
-							回复
-						</view>
-					</template>
+					{{commentInfo.commentText}}
+					
 					
 				</view>
+				
+					
+					  <slot></slot>
+					
+				
 			</view>
 		</view>
 	</view>
@@ -35,7 +36,8 @@
 		},
 		methods:{
 			replyComment(){
-				this.$emit('replyComment')
+				this.$emit('reply')
+				// console.log('dd')
 			}
 		}
 	}
@@ -43,7 +45,7 @@
 
 <style scoped lang="scss">
 .comment-list{
-				margin-top: 20rpx;
+				margin-top: 40rpx;
 				image{
 					height: 100rpx;
 					width: 100rpx;
@@ -51,25 +53,22 @@
 					border:1rpx solid #ddd;
 					box-shadow: 1rpx 1rpx 5rpx #ddd;
 					margin-right: 20rpx;
+					flex-shrink: 0;
 				}
 				.comment-content{
 					width: 100%;
 					.comment-user{
 						color: $theme-color;
-						font-size: 30rpx;
+						font-size: 25rpx;
 					}
 					.comment-text{
-						font-size: 28rpx;
+						font-size: 22rpx;
 						margin-top: 16rpx;
 						position: relative;
 						width: 100%;
-						.reply-button{
-							position: absolute;
-							color: $theme-color;
-							bottom: -10rpx;
-							right: 10rpx;
-						}
+						
 					}
+					
 				}
 			}
 </style>

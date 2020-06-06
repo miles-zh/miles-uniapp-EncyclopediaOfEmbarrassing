@@ -4,7 +4,7 @@
 			<i class="fa fa-chevron-left" aria-hidden="true" slot='left'></i>
 			<view class="m-f m-f-jcc m-f-f1">
 				<view>
-					{{list.title}}
+					{{contentInfo.contentTitle}}
 				</view>
 			</view>
 			<text slot='right'>···</text>
@@ -12,48 +12,55 @@
 		<scroll-view scroll-y="true">
 			<view class="common-list m-f">
 				<view class="common-list-left">
-					<image :src="list.userPic" lazy-load></image>
+					<image :src="contentInfo.avatar" lazy-load></image>
 				</view>
 				<view class="common-list-right">
 					<view class="common-list-right-row-1 m-f m-f-aic m-f-jcsb">
 						<view class="common-list-right-row-left m-f m-f-aic">
-							<view>{{list.username}}</view>
-							<view :style="{'background-color':list.sex === 0?'#2196f3':'#f40'}"> <text :class="['fa',list.sex === 0?'fa-mars':'fa-venus']"></text>
-								{{list.age}}</view>
+							<view>{{contentInfo.username}}</view>
+							<view :style="{'background-color':contentInfo.sex === 0?'#2196f3':'#f40'}"> <text :class="['fa',contentInfo.sex === 0?'fa-mars':'fa-venus']"></text>
+								{{contentInfo.userage}}</view>
 						</view>
 						<view class="common-list-right-row-right m-f m-f-aic">
-							<view :class="{'follow':list.isFollowed}" @tap='follow'>
-								{{list.isFollowed?'取消关注':'+ 关注'}}
+							<view :class="{'follow':contentInfo.isFollowed}" @tap='follow'>
+								{{contentInfo.isFollowed?'取消关注':'+ 关注'}}
 							</view>
 						</view>
 					</view>
 					<view class="common-list-right-row-2">26天前</view>
-					<view class="common-list-right-row-3">{{list.title}}</view>
+					<view class="common-list-right-row-3">{{contentInfo.contentTitle}}</view>
 					<view class="common-list-right-row-4 m-f m-f-aic m-f-jcc m-f-fdc">
-						<block v-for="(item,index) in list.imgUrl" :key="index">
-							<image v-if="list.type !== 'share' " :src="item" lazy-load @tap="previwImg(index)"></image>
-						</block>
+						
+							
+							<template v-if='contentInfo.contentType !== "share"'>
+								<image :src="item.imgUrl " lazy-load @tap="previwImg(index)" v-for="(item,index) in contentInfo.contentImgs" :key="index"></image>
+							</template>
+							
+						
+						
+						
 
-						<view v-if="list.type === 'video'" class="play fa fa-play-circle"></view>
-						<view class="play-info" v-if="list.type === 'video'">
-							{{list.videoInfo.playNumber}} 次播放 {{list.videoInfo.longTime}}
+						<view v-if="contentInfo.contentType === 'video'" class="play fa fa-play-circle"></view>
+						<view class="play-info" v-if="contentInfo.contentType === 'video'">
+							{{contentInfo.videoInfo.playNumber}} 次播放 {{contentInfo.videoInfo.longTime}}
 						</view>
-						<view class="share m-f" v-if="list.type === 'share'">
-							<image :src="list.shareInfo.shareImg"></image>
+						<view class="share m-f" v-if="contentInfo.contentType === 'share'">
+							<image :src="contentInfo.shareInfo.shareImg"></image>
 							<view class="share-title">
-								{{list.shareInfo.shareTitle}}
+								{{contentInfo.shareInfo.shareTitle}}
 							</view>
 						</view>
 					</view>
 					<view class="common-list-right-row-5 m-f m-f-jcsb">
 						<view class="address">
-							{{list.place}}
+							{{contentInfo.contentCreateAddress}}
 						</view>
 						<view class="info m-f m-f-aic">
-							<view> <i class="fa fa-share" aria-hidden="true"></i> {{list.shareNumber}}</view>
-							<view> <i class="fa fa-comment" aria-hidden="true"></i> {{list.commentNumber}}</view>
-							<view @tap='handleLike' :style="{'color':list.isLiked?'#f40':''}"> <i class="fa fa-thumbs-up" aria-hidden="true"></i>
-								{{list.likesNumber}}</view>
+							<view> <i class="fa fa-share" aria-hidden="true"></i> {{contentInfo.sharesNumber}}</view>
+							<view> <i class="fa fa-comment" aria-hidden="true"></i> {{contentInfo.commentsNumber}}</view>
+							<view @tap='handleLike' :style="{'color':contentInfo.contentLikesInfo.type == 1 ?'#f40':'#000'}"> <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+								{{contentInfo.contentLikesInfo.likesNumber}}</view>
+								
 						</view>
 					</view>
 				</view>
@@ -63,12 +70,21 @@
 					最新评论 1
 				</view>
 				<view class="comment-content-wrap">
-					<block v-for="(item,index) in commentList" :key="index">
-						<commentlist :commentInfo="item" @replyComment="null"></commentlist>
+					<block v-for="(item,index) in commentShowList" :key="index">
+						<commentlist :commentInfo="item" >
+							<view class="comment-dateTime m-f m-f-aic m-f-jcsb">
+								<view>{{item.commentCreatedShowTime}}</view> <text @tap="replyComment(index)">回复</text>
+							</view>
+							
+						</commentlist>
 						<template v-if="item.replyList.length>0">
 							<view class="reply-comment">
 								<block v-for="(item1,index1) in item.replyList" :key="index1">
-								<commentlist :commentInfo="item1" @replyComment="replyComment(index,index1)"></commentlist>
+								<commentlist :commentInfo="item1" >
+									<view class="comment-dateTime m-f m-f-aic m-f-jcfe">
+										<view>{{item.commentCreatedShowTime}}</view>
+									</view>
+								</commentlist>
 								</block>
 							</view>
 						</template>
@@ -79,10 +95,10 @@
 			</view>
 		</scroll-view>
 
-		<view class="publish-comment">
-			<input type="text" placeholder="文明发言" />
-			<view class="">
-
+		<view class="publish-comment m-f m-f-aic">
+			<input type="text" placeholder="文明发言" class="m-f-f1" ref='inputcommementtext' v-model.trim="inputCommentText"/>
+			<view @tap="publishtComment">
+				发送
 			</view>
 		</view>
 	</view>
@@ -95,22 +111,11 @@
 		data() {
 			return {
 
-				list: {
-				},
-				commentList:[
-					{
-						username:"nihao",
-						text:"生活如此美好",
-						avatar:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg',
-						replyList:[
-							{
-								username:'hello',
-								avatar:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg',
-								text:"生活如此多娇"
-							}
-						]
-					}
-				]
+				contentInfo: {},
+				commentList:[],
+				isReply:false,
+				inputCommentText:'',
+				commentIndex:null,
 			}
 		},
 		methods: {
@@ -123,63 +128,142 @@
 				console.log('share')
 			},
 			follow() {
-				this.list.isFollowed = !this.list.isFollowed
+				this.contentInfo.isFollowed = !this.contentInfo.isFollowed
+				// console.log(this.contentInfo.isFollowed)
 			},
 
 			handleLike() {
-
-
-				if (this.list.isLiked === false) {
-					this.list.isLiked = true
-					this.list.likesNumber++
-				} else {
-					this.list.likesNumber--
-					this.list.isLiked = false
+				// console.log(this.contentInfo.contentLikesInfo.type)
+				if (this.contentInfo.contentLikesInfo.type === 0) {
+					this.contentInfo.contentLikesInfo.type = 1
+					this.contentInfo.contentLikesInfo.likesNumber++
+					
+				} else if(this.contentInfo.contentLikesInfo.type === 1){
+					this.contentInfo.contentLikesInfo.type = 0
+					this.contentInfo.contentLikesInfo.likesNumber--
+					
+				}else{
+					this.contentInfo.contentLikesInfo.type = 1
+					this.contentInfo.contentLikesInfo.likesNumber++
+					this.contentInfo.contentLikesInfo.dislikesNumber--
 				}
-
-
 			},
+			
 			previwImg(index) {
-				uni.previewImage({
-					current: this.list.imgUrl[index],
-					urls: this.list.imgUrl
+				// let imgUrl=url+'.png'
+				// console.log(this.contentInfo.contentImgs)
+				let imgUrlArr=[]
+				this.contentInfo.contentImgs.forEach(item=>{
+					imgUrlArr.push(item.imgUrl)
 				})
+				uni.previewImage({
+					current: index,
+					urls: imgUrlArr
+				})
+				
 			},
-			replyComment(index,index1){
-				console.log(index,index1)
+			replyComment(index){
+				console.log(index)
+				let inputDom=this.$refs.inputcommementtext.$el.childNodes[0].childNodes[1]
+				this.isReply=true
+				this.commentIndex=index
+				inputDom.focus()
+				
+			},
+			dealTimeStamps(times){
+				// console.log(times)
+				let date=new Date(Number(times)),
+					year=date.getFullYear(),
+					months=date.getMonth()+1,
+					days=date.getDate(),
+					hours=date.getHours(),
+					minutes=date.getMinutes(),
+					seconds=date.getSeconds();
+					
+					months=months>9?months+'':'0'+months;
+					hours=hours>9?hours+'':'0'+hours;
+					days=days>9?days+'':'0'+days;
+					seconds=seconds>9?seconds+'':'0'+seconds;
+					minutes=minutes>9?minutes+'':'0'+minutes;
+					
+				return `${year}-${months}-${days} ${hours}:${minutes}:${seconds}`
+	
+			},
+			publishtComment(){
+				if(this.inputCommentText.length ===0 ){
+					uni.showToast({
+						title:'请输入发表内容'
+					})
+					return
+				}
+				let obj={
+					avatar:'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3325689363,2984980239&fm=26&gp=0.jpg' ,
+					commentText:this.inputCommentText,
+					replyList:[],
+					username:"milesmatheson",
+					commentCreatedTime:new Date().getTime()+''
+				}
+				
+				if(!this.isReply){
+					this.commentList.unshift(obj)
+				}else{
+					this.commentList[this.commentIndex].replyList.unshift(obj)
+				}
+				
+				
+				this.inputCommentText=''
+				this.isReply=false
+				this.commentIndex=null
 			}
-
 		},
 		components: {
 			uniNavBar,
 			commentlist
 		},
 		onLoad(options) {
-
-			let info = JSON.parse(decodeURIComponent(options.info))
-			this.list = {
-				userPic: info.avatar,
-				username: info.nickName,
-				// 0代表男性，1代表女性
-				sex: 0,
-				age: 25,
-				isFollowed: info.isFollowed,
-				title: info.title,
-				titlePic: info.image,
-				type: info.img,
-				place: '深圳 龙岗',
-				shareNumber: info.shareNumber,
-				commentNumber: info.commentNumber,
-				likesNumber: info.info.likeNumber,
-				info: info.info,
-				isLiked: false,
-				imgUrl: ['https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg',
-					'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg',
-					'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1888126095,2183675189&fm=11&gp=0.jpg'
-				]
+			// console.log(options,'1')
+			let info = JSON.parse(decodeURIComponent(options.list))					
+			this.contentInfo = info
+			this.commentList=info.commentList
+			// console.log(info)
+		},
+		computed:{
+			commentShowList(){
+				let arr=  this.commentList
+				
+				
+				arr.forEach(item=>{
+					item.commentCreatedShowTime=item.commentCreatedTime
+					item.replyList.forEach(value=>{
+						value.commentCreatedShowTime=value.commentCreatedTime
+					})
+				})
+				
+				arr.sort((a,b)=>{
+					let aTime=Number(a.commentCreatedShowTime),
+					bTime=Number(b.commentCreatedShowTime);
+					return bTime - aTime
+				})
+				arr.forEach(item=>{
+					item.replyList.sort((a,b)=>{
+						let aTime=Number(a.commentCreatedShowTime),
+						bTime=Number(b.commentCreatedShowTime);
+						return bTime - aTime
+					})
+				})
+				
+				
+				arr.forEach(item=>{
+					item.commentCreatedShowTime=this.dealTimeStamps(item.commentCreatedShowTime)
+					item.replyList.forEach(value=>{
+						value.commentCreatedShowTime=this.dealTimeStamps(value.commentCreatedShowTime)
+					})
+				})
+				// console.log(arr)
+				return arr
 			}
-			console.log(info)
 		}
+		
 	}
 </script>
 
@@ -207,6 +291,7 @@
 
 	scroll-view {
 		margin-top: 50rpx;
+		height: calc(100vh - 170rpx - 90rpx);
 	}
 
 	.common-list {
@@ -373,6 +458,35 @@
 				padding: 20rpx;
 				margin-top: 20rpx;
 			}
+			.comment-dateTime{
+				font-size: 25rpx;
+				margin-top: 20rpx;
+				text{
+					color: $theme-color;
+				}
+			}
+		}
+	}
+	.publish-comment{
+		background-color: $theme-color;
+		height: 100rpx;
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		padding: 20rpx;
+		input{
+			background-color: #fff;
+			font-size: 25rpx;
+			padding: 10rpx 20rpx;
+			border-radius: 10rpx;
+		}
+		view{
+			background-color: #eee;
+			color: #555;
+			padding: 10rpx 20rpx;
+			font-size: 25rpx;
+			margin-left: 20rpx;
+			border-radius: 10rpx;
 		}
 	}
 </style>
