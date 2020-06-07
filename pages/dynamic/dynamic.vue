@@ -52,12 +52,9 @@
 							</view>
 						</view>
 						<view class="topics-nav-item m-f m-f-jcsa">
-							<view>最新</view>
-							<view>游戏</view>
-							<view>打卡</view>
-							<view>情感</view>
-							<view>故事</view>
-							<view>喜爱</view>
+							<block v-for="(item,index) in topicsHotNameList" :key='index'>
+								<view>{{item.hotName}}</view>
+							</block>
 						</view>
 					</view>
 					<!-- 自动更新 -->
@@ -65,7 +62,7 @@
 						<view class="topics-news-title">
 							最新更新
 						</view>
-						<block v-for="(item,index) in topicsList" :key='index'>
+						<block v-for="(item,index) in topicsNewList" :key='index'>
 							<TopicsList :topic="item"></TopicsList>
 						</block>
 						
@@ -89,65 +86,10 @@
 		data() {
 			return {
 				titleTab: 'follow',
-				followedNewsList: [{
-						userPic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3441232288,3930001172&fm=26&gp=0.jpg',
-						username: '昵称',
-						// 0代表男性，1代表女性
-						sex: 0,
-						age: 25,
-						isFollowed: false,
-						title: '你哈，生活是如此多娇',
-						titlePic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3441232288,3930001172&fm=26&gp=0.jpg',
-						type: 'img',
-						place: '深圳 龙岗',
-						shareNumber: 20,
-						commentNumber: 40,
-						likesNumber: 12,
-						isFollowed: false
-					},
-					{
-						userPic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3441232288,3930001172&fm=26&gp=0.jpg',
-						username: '昵称',
-						// 0代表男性，1代表女性
-						sex: 0,
-						age: 25,
-						isFollowed: false,
-						title: '我是视频',
-						titlePic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3441232288,3930001172&fm=26&gp=0.jpg',
-						type: 'video',
-						videoInfo: {
-							playNumber: '20w',
-							longTime: '20:09'
-						},
-						place: '深圳 龙岗',
-						shareNumber: 20,
-						commentNumber: 40,
-						likesNumber: 12,
-						isFollowed: true
-					},
-					{
-						userPic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3441232288,3930001172&fm=26&gp=0.jpg',
-						username: '昵称',
-						// 0代表男性，1代表女性
-						sex: 1,
-						age: 32,
-						isFollowed: false,
-						title: '你哈,我是分享',
-
-						type: 'share',
-						shareInfo: {
-							shareImg: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3441232288,3930001172&fm=26&gp=0.jpg',
-							shareTitle: '你好我是分享标题你好我是分享标题你好我是分享标题你好我是分享标题你好我是分享标题你好我是分享标题你好我是分享标题你好我是分享标题你好我是分享标题你好我是分享标题你好我是分享标题'
-						},
-						place: '深圳 龙岗',
-						shareNumber: 20,
-						commentNumber: 40,
-						likesNumber: 12,
-						isFollowed: false
-					}
-				],
+				followedNewsList: [],
 				loadText: '上拉加载更多',
 				topicsSearchText: '',
+				topicsHotNameList:[],
 				topicsSwiperList: [{
 						imgUrl: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590890677528&di=8d5ccd4ee18e7856fc6bc60952ffef6d&imgtype=0&src=http%3A%2F%2Fimg3.duitang.com%2Fuploads%2Fitem%2F201210%2F04%2F20121004225459_YQehP.thumb.224_0.jpeg'
 					},
@@ -158,36 +100,45 @@
 						imgUrl: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1897508438,807292774&fm=26&gp=0.jpg'
 					},
 				]
-				,topicsList:[
-					{
-						img:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1592023939,2457909057&fm=26&gp=0.jpg',
-						topicsTitle:'我的话题',
-						topicsContent:'我的话题dddd',
-						topicsTotal:20,
-						topicsNow:4
-					},
-					{
-						img:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1592023939,2457909057&fm=26&gp=0.jpg',
-						topicsTitle:'我的话题',
-						topicsContent:'我的话题dddd',
-						topicsTotal:20,
-						topicsNow:4
-					},
-					{
-						img:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1592023939,2457909057&fm=26&gp=0.jpg',
-						topicsTitle:'我的话题',
-						topicsContent:'我的话题dddd',
-						topicsTotal:20,
-						topicsNow:4
-					}
-				]
+				,topicsNewList:[]
 			}
 		},
 		methods: {
 			changeTitleTab(tab) {
 				this.titleTab = tab
 			},
-
+			async getFollowedNewsList(){
+				let {data}= await this.myRequest({
+					url:'/256990/api/followed/list',
+					method:'POST',
+					data:{
+						userid:1
+					}
+				})
+				// console.log(data)
+				this.followedNewsList=[...data]
+			},
+			async getTopicsSwiperList(){
+				let {data} = await this.myRequest({
+					url:'/256990/api/topics/swiperimgs'
+				})
+				// console.log(data)
+				this.topicsSwiperList=data.swiperImgs
+			},
+			async getTopicsHotNameList(){
+				let {data}=await this.myRequest({
+					url:'/256990/api/topics/hotname'
+				})
+				// console.log(data)
+				this.topicsHotNameList=data.hotNameList
+			},
+			async getTopicsNewList(){
+				let {data:{topicsNewList}} = await this.myRequest({
+					url:'/256990/api/topics/newlist'
+				}) 
+				console.log(topicsNewList)
+				this.topicsNewList=topicsNewList
+			},
 			goPublish() {
 				uni.navigateTo({
 					url: '/pages/publish/publish'
@@ -202,44 +153,32 @@
 					url:"/pages/topicsClassify/topicsClassify"
 				})
 			},
-			loadMore() {
+			async loadMore() {
 				// console.log(e)
 				this.loadText = '加载中...'
 				switch (this.titleTab) {
 					case 'follow':
-						setTimeout(() => {
-							let obj = {
-								userPic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3441232288,3930001172&fm=26&gp=0.jpg',
-								username: '昵称',
-								// 0代表男性，1代表女性
-								sex: 0,
-								age: 25,
-								isFollowed: false,
-								title: '你哈，生活是如此多娇',
-								titlePic: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3441232288,3930001172&fm=26&gp=0.jpg',
-								type: 'img',
-								place: '深圳 龙岗',
-								shareNumber: 20,
-								commentNumber: 40,
-								likesNumber: 12,
-								isFollowed: false
-							};
-							this.followedNewsList.push(obj)
-							this.loadText = '上拉加载更多'
-						}, 2000)
+						let {data}= await this.myRequest({
+							url:'/256990/api/followed/list',
+							method:'POST',
+							data:{
+								userid:1
+							}
+						})
+						
+						this.followedNewsList=[...this.followedNewsList,...data]
+						this.loadText = '上拉加载更多'
+						
 					break;
 					case 'topic':
-					setTimeout(() => {
-						let obj = {
-							img:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1592023939,2457909057&fm=26&gp=0.jpg',
-							topicsTitle:'我的话题',
-							topicsContent:'我的话题dddd',
-							topicsTotal:30,
-							topicsNow:4
-						};
-						this.topicsList.push(obj)
+						let {data:{topicsNewList}} = await this.myRequest({
+							url:'/256990/api/topics/newlist'
+						}) 
+						// console.log(topicsNewList)
+						this.topicsNewList=[...this.topicsNewList, ...topicsNewList]
+						
 						this.loadText = '上拉加载更多'
-					}, 2000)
+					
 					break;
 
 				}
@@ -249,6 +188,12 @@
 			uniNavBar,
 			commonlist,
 			TopicsList
+		},
+		onLoad() {
+			this.getFollowedNewsList()
+			this.getTopicsSwiperList()
+			this.getTopicsHotNameList()
+			this.getTopicsNewList()
 		}
 	}
 </script>

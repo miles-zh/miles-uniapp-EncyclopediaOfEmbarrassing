@@ -1,11 +1,11 @@
 <template>
 	<view class="topics-list-wrap">
 		<view class="topics-list m-f" @tap="goTopicDetail">
-			<image :src="topic.img"></image>
+			<image :src="topic.topicsImg"></image>
 			<view class="topics-info m-f m-f-fdc m-f-jcsa m-f-f1">
 				<view>{{topic.topicsTitle}}</view>
 				<view>{{topic.topicsContent}}</view>
-				<view>动态 {{topic.topicsTotal}} 今日 {{topic.topicsNow}}</view>
+				<view>动态 {{topic.topicsTotalNumber}} 今日 {{topic.topicsTodayNumber}}</view>
 			</view>
 		</view>
 		</view>

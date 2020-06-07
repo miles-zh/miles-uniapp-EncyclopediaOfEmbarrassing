@@ -96,7 +96,7 @@
 		</scroll-view>
 
 		<view class="publish-comment m-f m-f-aic">
-			<input type="text" placeholder="文明发言" class="m-f-f1" ref='inputcommementtext' v-model.trim="inputCommentText"/>
+			<input type="text" placeholder="文明发言" class="m-f-f1" id='inputcommementtext' v-model.trim="inputCommentText"/>
 			<view @tap="publishtComment">
 				发送
 			</view>
@@ -119,19 +119,22 @@
 			}
 		},
 		methods: {
+			// 返回上一页
 			goBack() {
 				uni.navigateBack({
 					delta: 1
 				})
 			},
+			// 分享
 			share() {
 				console.log('share')
 			},
+			// 关注
 			follow() {
 				this.contentInfo.isFollowed = !this.contentInfo.isFollowed
 				// console.log(this.contentInfo.isFollowed)
 			},
-
+			// 点赞
 			handleLike() {
 				// console.log(this.contentInfo.contentLikesInfo.type)
 				if (this.contentInfo.contentLikesInfo.type === 0) {
@@ -148,7 +151,7 @@
 					this.contentInfo.contentLikesInfo.dislikesNumber--
 				}
 			},
-			
+			// 图片预览
 			previwImg(index) {
 				// let imgUrl=url+'.png'
 				// console.log(this.contentInfo.contentImgs)
@@ -163,11 +166,14 @@
 				
 			},
 			replyComment(index){
-				console.log(index)
-				let inputDom=this.$refs.inputcommementtext.$el.childNodes[0].childNodes[1]
+				const query = uni.createSelectorQuery().in(this);
+				 let inputDom=query.select('#inputcommementtext')
+				// console.log(JSON.stringify(input))
+				// let inputDom=document.getElementById("inputcommementtext")
+				// console.log(inputDom)
 				this.isReply=true
 				this.commentIndex=index
-				inputDom.focus()
+				// inputDom.onfocus()
 				
 			},
 			dealTimeStamps(times){
@@ -189,6 +195,7 @@
 				return `${year}-${months}-${days} ${hours}:${minutes}:${seconds}`
 	
 			},
+			// 发布评论
 			publishtComment(){
 				if(this.inputCommentText.length ===0 ){
 					uni.showToast({
@@ -463,6 +470,9 @@
 				margin-top: 20rpx;
 				text{
 					color: $theme-color;
+				}
+				view{
+					font-size: 20rpx;
 				}
 			}
 		}

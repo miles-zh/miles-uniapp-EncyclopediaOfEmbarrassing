@@ -4,7 +4,7 @@ async function myRequest(options){
 		...options,
 		url:baseUrl+options.url
 	})
-	// console.log(res[0],res[1].data.isOk,res)
+	// console.log(res)
 	if(res[1].data.isOk === false){
 		// console.log(res[1].data.errMsg)
 		uni.showToast({

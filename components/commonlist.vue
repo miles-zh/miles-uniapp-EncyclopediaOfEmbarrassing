@@ -1,12 +1,12 @@
 <template>
 	<view>
 		<view class="common-list m-f">
-			<view class="common-list-left"><image :src="list.userPic" lazy-load></image></view>
+			<view class="common-list-left"><image :src="list.avatar" lazy-load></image></view>
 			<view class="common-list-right">
 				<view class="common-list-right-row m-f m-f-aic m-f-jcsb">
 					<view class="common-list-right-row-left m-f m-f-aic">
 						<view>{{list.username}}</view>
-						<view :style="{'background-color':list.sex === 0?'#2196f3':'#f40'}"> <text :class="['fa',list.sex === 0?'fa-mars':'fa-venus']"></text> {{list.age}}</view>
+						<view :style="{'background-color':list.sex === 0?'#2196f3':'#f40'}"> <text :class="['fa',list.sex === 0?'fa-mars':'fa-venus']"></text> {{list.userage}}</view>
 					</view>
 					<view  class="common-list-right-row-right m-f m-f-aic">
 						<view :class="{'follow':list.isFollowed}" @tap='follow'>
@@ -14,11 +14,11 @@
 						</view>
 					</view>
 				</view>
-				<view class="common-list-right-row">{{list.title}}</view>
-				<view class="common-list-right-row m-f m-f-aic m-f-jcc">
-					<image v-if="list.type !== 'share' " :src="list.titlePic" lazy-load></image>
-					<view v-if="list.type === 'video'" class="play fa fa-play-circle"></view>
-					<view class="play-info" v-if="list.type === 'video'">
+				<view class="common-list-right-row">{{list.contentTitle}}</view>
+				<view class="common-list-right-row m-f m-f-aic m-f-jcc" @tap='goDetail(list)'>
+					<image v-if="list.contentType !== 'share' " :src="list.contentImgs[0].imgUrl" lazy-load></image>
+					<view v-if="list.contentType === 'video'" class="play fa fa-play-circle"></view>
+					<view class="play-info" v-if="list.contentType === 'video'">
 						{{list.videoInfo.playNumber}} 次播放 {{list.videoInfo.longTime}}
 					</view>
 					<view class="share m-f" v-if="list.type === 'share'">
@@ -30,12 +30,12 @@
 				</view>
 				<view class="common-list-right-row m-f m-f-jcsb">
 					<view class="address">
-						{{list.place}}
+						{{list.contentCreateAddress}}
 					</view>
 					<view class="info m-f m-f-aic">
-						<view> <i class="fa fa-share" aria-hidden="true"></i> {{list.shareNumber}}</view>
-						<view> <i class="fa fa-comment" aria-hidden="true"></i> {{list.commentNumber}}</view>
-						<view> <i class="fa fa-thumbs-up" aria-hidden="true"></i> {{list.likesNumber}}</view>
+						<view> <i class="fa fa-share" aria-hidden="true"></i> {{list.sharesNumber}}</view>
+						<view> <i class="fa fa-comment" aria-hidden="true"></i> {{list.commentsNumber}}</view>
+						<view> <i class="fa fa-thumbs-up" aria-hidden="true"></i> {{list.contentLikesInfo.likesNumber}}</view>
 					</view>
 				</view>
 			</view>
@@ -54,6 +54,11 @@
 		methods:{
 			follow(){
 				this.$emit('clickFollow')
+			},
+			goDetail(list){
+				uni.navigateTo({
+					url:"/pages/contentDetail/contentDetail?list="+encodeURIComponent(JSON.stringify(list))
+				})
 			}
 		}
 	}
@@ -116,6 +121,7 @@
 			}
 			.common-list-right-row:nth-child(2){
 				font-size: 25rpx;
+				text-indent: 50rpx;
 			}
 			.common-list-right-row:nth-child(3){
 				
